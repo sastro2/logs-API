@@ -5,10 +5,17 @@ namespace logs_API.Repo
 {
     public class InMemLogRepo : ILogs
     {
-        public void CreateLogs(UserJourney userJourney)
+        private List<Log> _Logs;
+
+        public InMemLogRepo()
         {
-            throw new NotImplementedException();
+            _Logs = new() { new Log { Id = "12345", Message = "this is a log", Timestamp = 12345, Type = "error" } };
         }
+
+        public void CreateLogs(UserJourney userJourney)
+        { 
+            throw new NotImplementedException();
+        } 
 
         public void DeleteLog(string id)
         {
@@ -22,7 +29,7 @@ namespace logs_API.Repo
 
         public IEnumerable<Log> GetLogs()
         {
-            throw new NotImplementedException();
+            return _Logs;
         }
     }
 }
