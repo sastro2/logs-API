@@ -3,7 +3,7 @@ using logs_API.Models.Logs;
 
 namespace logs_API.Repo
 {
-    public class InMemLogRepo : ILogs
+    public class LogRepo : ILogs
     {
         public void CreateLogs(UserJourney userJourney)
         {

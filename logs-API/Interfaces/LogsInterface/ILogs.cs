@@ -1,6 +1,6 @@
 ﻿using logs_API.Models.Logs;
 
-namespace logs_API.Repo
+namespace logs_API.Interfaces.LogsInterface
 {
     public interface ILogs
     {
