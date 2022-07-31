@@ -15,12 +15,19 @@ namespace logs_API.Controllers
         public LogsController(ILogs logs)
         {
             _LogsInterface = logs;
-            //_LogsInterface = new InMemLogRepo();
         }
 
-        [HttpGet]
-        public ActionResult<IEnumerable<ResLogDto>> GetLogs()
+        [HttpGet("{username, password}")]
+        public ActionResult<IEnumerable<ResLogDto>> GetLogs(string username, string password, int projectdId)
         {
+            // TODOS
+
+            // Check if credentials correct if not return
+
+            // Check if project exists if not return
+
+            // Check if user has access to project if not return
+
             IEnumerable<DbLog>? logs = _LogsInterface.GetLogs();
 
             if (logs == null)
@@ -32,9 +39,19 @@ namespace logs_API.Controllers
             return logsDto;
         }
 
-        [HttpGet("{id}")]
-        public ActionResult<ResLogDto> GetLog(string id)
+        [HttpGet("{username, password, id}")]
+        public ActionResult<ResLogDto> GetLog(string username, string password, string id)
         {
+            // TODOS
+
+            // Check if credentials correct if not return
+
+            // Check if project exists if not return
+
+            // Check if user has access to project if not return
+
+            // Check if specified log is part of that project if not return
+
             DbLog? log = _LogsInterface.GetLog(id);
             
             if(log == null) 
@@ -44,9 +61,17 @@ namespace logs_API.Controllers
             return logDto;
         }
 
-        [HttpPost]
-        public ActionResult CreateLogs(UserJourneyDto userJourneyDto)
+        [HttpPost("{username, password, projectId, userJourney}")]
+        public ActionResult CreateLogs(string username, string password, int projectId,  UserJourneyDto userJourneyDto)
         {
+            // TODOS
+
+            // Check if credentials correct if not return
+
+            // Check if project exists if not return
+
+            // Check if user has access to project if not return
+
             ReqLog[] reqLogs = Array.ConvertAll(userJourneyDto.Logs, log
                 => new ReqLog() { Message = log.Message, Timestamp = log.Timestamp, Type = log.Type });
 
