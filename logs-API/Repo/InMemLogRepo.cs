@@ -1,20 +1,28 @@
 ﻿using logs_API.Interfaces.LogsInterface;
-using logs_API.Models.Logs;
+using logs_API.Models.LogModels;
 
 namespace logs_API.Repo
 {
     public class InMemLogRepo : ILogs
     {
-        private List<Log> _Logs;
+        private List<DbLog> _Logs;
 
         public InMemLogRepo()
         {
-            _Logs = new() { new Log { Id = "12345", Message = "this is a log", Timestamp = 12345, Type = "error" } };
+            _Logs = new() { new DbLog { Id = "12345", ProjectId = 12345, Type = "error", Message = "this is a log" } };
         }
 
         public void CreateLogs(UserJourney userJourney)
         { 
-            throw new NotImplementedException();
+            foreach(ReqLog log in userJourney.Logs)
+            {
+                DbLog dbLog = new DbLog { Id = userJourney.Timestamp.ToString() 
+                                          + "-" + userJourney.Id 
+                                          + "-" + log.Timestamp.ToString(), 
+                                          ProjectId = userJourney.ProjectId, Message = log.Message, Type = log.Type};
+
+                _Logs.Add(dbLog);
+            }
         } 
 
         public void DeleteLog(string id)
@@ -22,14 +30,14 @@ namespace logs_API.Repo
             throw new NotImplementedException();
         }
 
-        public Log? GetLog(string id)
+        public DbLog? GetLog(string id)
         {
             var log = _Logs.Where(x => x.Id == id).SingleOrDefault();
 
             return log;
         }
 
-        public IEnumerable<Log>? GetLogs()
+        public IEnumerable<DbLog>? GetLogs()
         {
             return _Logs;
         }

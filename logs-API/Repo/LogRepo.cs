@@ -15,12 +15,12 @@ namespace logs_API.Repo
             throw new NotImplementedException();
         }
 
-        public Log GetLog(string id)
+        public ReqLog GetLog(string id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Log> GetLogs()
+        public IEnumerable<ReqLog> GetLogs()
         {
             throw new NotImplementedException();
         }
