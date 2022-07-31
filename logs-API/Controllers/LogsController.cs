@@ -11,9 +11,10 @@ namespace logs_API.Controllers
     {
         private ILogs _LogsInterface;
 
-        public LogsController()
+        public LogsController(ILogs logs)
         {
-            _LogsInterface = new InMemLogRepo();
+            _LogsInterface = logs;
+            //_LogsInterface = new InMemLogRepo();
         }
 
         [HttpGet]
