@@ -28,7 +28,9 @@ namespace logs_API.Repo
 
         public void DeleteLog(string id)
         {
-            throw new NotImplementedException();
+            int index = _Logs.FindIndex(x => x.Id == id);
+            if(index > -1)
+                _Logs.RemoveAt(index);
         }
 
         public DbLog? GetLog(string id)

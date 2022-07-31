@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using logs_API.Interfaces.LogsInterface;
-using logs_API.Repo;
 using logs_API.Models.LogModels;
 using logs_API.Dtos;
 
@@ -17,8 +16,8 @@ namespace logs_API.Controllers
             _LogsInterface = logs;
         }
 
-        [HttpGet("{username, password}")]
-        public ActionResult<IEnumerable<ResLogDto>> GetLogs(string username, string password, int projectdId)
+        [HttpGet]
+        public ActionResult<IEnumerable<ResLogDto>> GetLogs(string username, string password, int projectId)
         {
             // TODOS
 
@@ -39,8 +38,8 @@ namespace logs_API.Controllers
             return logsDto;
         }
 
-        [HttpGet("{username, password, id}")]
-        public ActionResult<ResLogDto> GetLog(string username, string password, string id)
+        [HttpGet("{id}")]
+        public ActionResult<ResLogDto> GetLog(string username, string password, int projectId, string id)
         {
             // TODOS
 
@@ -61,7 +60,7 @@ namespace logs_API.Controllers
             return logDto;
         }
 
-        [HttpPost("{username, password, projectId, userJourney}")]
+        [HttpPost("{userJourney}")]
         public ActionResult CreateLogs(string username, string password, int projectId,  UserJourneyDto userJourneyDto)
         {
             // TODOS
@@ -82,6 +81,27 @@ namespace logs_API.Controllers
 
             _LogsInterface.CreateLogs(userJourney);
 
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteLog(string username, string password, int projectId, string id)
+        {
+            // TODOS
+
+            // Check if credentials correct if not return
+
+            // Check if project exists if not return
+
+            // Check if user has access to project if not return
+
+            // Check if specified log is part of that project if not return
+
+            DbLog? log = _LogsInterface.GetLog(id);
+            if (log == null)
+                return NotFound();
+
+            _LogsInterface.DeleteLog(id);
             return Ok();
         }
     }
