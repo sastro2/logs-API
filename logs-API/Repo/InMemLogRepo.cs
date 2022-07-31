@@ -22,12 +22,14 @@ namespace logs_API.Repo
             throw new NotImplementedException();
         }
 
-        public Log GetLog(string id)
+        public Log? GetLog(string id)
         {
-            throw new NotImplementedException();
+            var log = _Logs.Where(x => x.Id == id).SingleOrDefault();
+
+            return log;
         }
 
-        public IEnumerable<Log> GetLogs()
+        public IEnumerable<Log>? GetLogs()
         {
             return _Logs;
         }
