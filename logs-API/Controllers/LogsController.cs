@@ -19,7 +19,7 @@ namespace logs_API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<LogDto>> GetLogs()
+        public ActionResult<IEnumerable<ResLogDto>> GetLogs()
         {
             IEnumerable<DbLog>? logs = _LogsInterface.GetLogs();
 
@@ -27,20 +27,37 @@ namespace logs_API.Controllers
                 return NotFound();
 
             var logsDto = logs
-                .Select(x => new LogDto { Id = x.Id, Message = x.Message, ProjectId = x.ProjectId, Type = x.Type }).ToList();
+                .Select(x => new ResLogDto { Id = x.Id, Message = x.Message, ProjectId = x.ProjectId, Type = x.Type }).ToList();
 
             return logsDto;
         }
+
         [HttpGet("{id}")]
-        public ActionResult<LogDto> GetLog(string id)
+        public ActionResult<ResLogDto> GetLog(string id)
         {
             DbLog? log = _LogsInterface.GetLog(id);
             
             if(log == null) 
                 return NotFound();
 
-            LogDto logDto = new() { Id = log.Id, Message = log.Message, ProjectId = log.ProjectId, Type = log.Type };
+            ResLogDto logDto = new() { Id = log.Id, Message = log.Message, ProjectId = log.ProjectId, Type = log.Type };
             return logDto;
+        }
+
+        [HttpPost]
+        public ActionResult CreateLogs(UserJourneyDto userJourneyDto)
+        {
+            ReqLog[] reqLogs = Array.ConvertAll(userJourneyDto.Logs, log
+                => new ReqLog() { Message = log.Message, Timestamp = log.Timestamp, Type = log.Type });
+
+            UserJourney userJourney = new() { Id = userJourneyDto.Id, 
+                                              Logs = reqLogs, 
+                                              ProjectId = userJourneyDto.ProjectId, 
+                                              Timestamp = userJourneyDto.Timestamp };
+
+            _LogsInterface.CreateLogs(userJourney);
+
+            return Ok();
         }
     }
 }

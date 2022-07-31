@@ -16,10 +16,11 @@ namespace logs_API.Repo
         { 
             foreach(ReqLog log in userJourney.Logs)
             {
-                DbLog dbLog = new DbLog { Id = userJourney.Timestamp.ToString() 
-                                          + "-" + userJourney.Id 
-                                          + "-" + log.Timestamp.ToString(), 
-                                          ProjectId = userJourney.ProjectId, Message = log.Message, Type = log.Type};
+                DbLog dbLog = new()
+                { Id = userJourney.Timestamp.ToString() 
+                    + "-" + userJourney.Id 
+                    + "-" + log.Timestamp.ToString(), 
+                    ProjectId = userJourney.ProjectId, Message = log.Message, Type = log.Type };
 
                 _Logs.Add(dbLog);
             }

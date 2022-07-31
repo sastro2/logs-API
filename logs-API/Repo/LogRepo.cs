@@ -1,5 +1,5 @@
 ﻿using logs_API.Interfaces.LogsInterface;
-using logs_API.Models.Logs;
+using logs_API.Models.LogModels;
 
 namespace logs_API.Repo
 {
@@ -15,12 +15,12 @@ namespace logs_API.Repo
             throw new NotImplementedException();
         }
 
-        public ReqLog GetLog(string id)
+        public DbLog GetLog(string id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<ReqLog> GetLogs()
+        public IEnumerable<DbLog> GetLogs()
         {
             throw new NotImplementedException();
         }
