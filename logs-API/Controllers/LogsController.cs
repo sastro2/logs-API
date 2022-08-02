@@ -2,22 +2,27 @@
 using logs_API.Interfaces.LogsInterface;
 using logs_API.Models.LogModels;
 using logs_API.Dtos;
+using logs_API.Repo.LogsControllerRepo;
+using logs_API.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace logs_API.Controllers
 {
     [ApiController]
-    [Route("logs")]
+    [Route("[controller]")]
     public class LogsController: ControllerBase
     {
-        private ILogs _LogsInterface;
+        private readonly DataContext _context;
+        private readonly ILogs _LogsInterface;
 
-        public LogsController(ILogs logs)
+        public LogsController(DataContext context)
         {
-            _LogsInterface = logs;
+            _context = context;
+            _LogsInterface = new LogRepo();
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<ResLogDto>> GetLogs(string username, string password, int projectId)
+        public async Task<ActionResult<IEnumerable<ResLogDto>>> GetLogs()
         {
             // TODOS
 
@@ -27,19 +32,16 @@ namespace logs_API.Controllers
 
             // Check if user has access to project if not return
 
-            IEnumerable<DbLog>? logs = _LogsInterface.GetLogs();
+            IEnumerable<DbLog> logs = await _LogsInterface.GetLogs(_context);
 
-            if (logs == null)
-                return NotFound();
-
-            var logsDto = logs
+            List<ResLogDto> logsDto = logs
                 .Select(x => new ResLogDto { Id = x.Id, Message = x.Message, ProjectId = x.ProjectId, Type = x.Type }).ToList();
 
             return logsDto;
         }
 
         [HttpGet("{id}")]
-        public ActionResult<ResLogDto> GetLog(string username, string password, int projectId, string id)
+        public async Task<ActionResult<ResLogDto>> GetLog(string id)
         {
             // TODOS
 
@@ -51,7 +53,7 @@ namespace logs_API.Controllers
 
             // Check if specified log is part of that project if not return
 
-            DbLog? log = _LogsInterface.GetLog(id);
+            DbLog? log = await _LogsInterface.GetLog(_context, id);
             
             if(log == null) 
                 return NotFound();
@@ -61,7 +63,7 @@ namespace logs_API.Controllers
         }
 
         [HttpPost("{userJourney}")]
-        public ActionResult CreateLogs(string username, string password, int projectId,  UserJourneyDto userJourneyDto)
+        public async Task<ActionResult> CreateLogs([FromBody] UserJourneyDto userJourneyDto)
         {
             // TODOS
 
@@ -71,21 +73,27 @@ namespace logs_API.Controllers
 
             // Check if user has access to project if not return
 
+            Console.WriteLine("I AM HERE 111111111111111111111111111");
+
             ReqLog[] reqLogs = Array.ConvertAll(userJourneyDto.Logs, log
                 => new ReqLog() { Message = log.Message, Timestamp = log.Timestamp, Type = log.Type });
+
+            Console.WriteLine("I AM HERE 2222222222222222222222222");
 
             UserJourney userJourney = new() { Id = userJourneyDto.Id, 
                                               Logs = reqLogs, 
                                               ProjectId = userJourneyDto.ProjectId, 
                                               Timestamp = userJourneyDto.Timestamp };
 
-            _LogsInterface.CreateLogs(userJourney);
+            Console.WriteLine("I AM HERE 33333333333333333333333333");
+
+            await _LogsInterface.CreateLogs(_context, userJourney);
 
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public ActionResult DeleteLog(string username, string password, int projectId, string id)
+        public async Task<ActionResult> DeleteLog(string id)
         {
             // TODOS
 
@@ -97,11 +105,11 @@ namespace logs_API.Controllers
 
             // Check if specified log is part of that project if not return
 
-            DbLog? log = _LogsInterface.GetLog(id);
+            DbLog? log = await _LogsInterface.GetLog(_context, id);
             if (log == null)
                 return NotFound();
 
-            _LogsInterface.DeleteLog(id);
+            await _LogsInterface.DeleteLog(_context, log);
             return Ok();
         }
     }
