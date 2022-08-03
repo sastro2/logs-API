@@ -5,11 +5,13 @@ using logs_API.Dtos;
 using logs_API.Repo.LogsControllerRepo;
 using logs_API.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Cors;
 
 namespace logs_API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [EnableCors()]
     public class LogsController: ControllerBase
     {
         private readonly DataContext _context;
