@@ -2,26 +2,36 @@
 using logs_API.Models.LogModels;
 using logs_API.Data;
 using Microsoft.EntityFrameworkCore;
+using logs_API.Models.LogModels.Database;
+using logs_API.Dtos;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace logs_API.Repo.LogsControllerRepo
 {
     public class LogRepo : ILogs
     {
-        public async Task CreateLogs(DataContext context, UserJourney userJourney)
+        public async Task CreateLogs(DataContext context, UserJourneyDto userJourney)
         {
-            int inc = 0;
+            var project = context.Projects.FirstOrDefault(p => p.Id == userJourney.ProjectId);
+            if (project == null) { return; }
 
-            foreach(ReqLog log in userJourney.Logs)
+            var journey = new DbUserJourney { ProjectId = userJourney.ProjectId, Timestamp = userJourney.Timestamp };
+
+            journey.DbLogs = new List<DbLog>();
+            foreach (ReqLogDto log in userJourney.Logs)
             {
-                Console.WriteLine("HIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
-                string id = userJourney.Timestamp.ToString() + "-" + userJourney.Id + "-" + log.Timestamp.ToString() + "-" + inc.ToString();
-                DbLog dbLog = new() { Id = id, Message = log.Message, ProjectId = userJourney.ProjectId, Type = log.Type };
+                DbLogType? type = context.Types.FirstOrDefault(t => t.ProjectId == userJourney.ProjectId && t.Name == log.Type);
 
-                inc += 1;
-
-                context.Logs.Add(dbLog);
-                await context.SaveChangesAsync();
+                if (type != null)
+                {
+                    DbLog dbLog = new() { Message = log.Message, LogTypeId = type.Id };
+                    journey.DbLogs.Add(dbLog);
+                }
             }
+
+            context.UserJourneys.Add(journey);
+            await context.SaveChangesAsync();           
         }
 
         public async Task DeleteLog(DataContext context, DbLog log)

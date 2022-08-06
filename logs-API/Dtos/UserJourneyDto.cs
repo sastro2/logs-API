@@ -5,8 +5,7 @@ namespace logs_API.Dtos
 {
     public class UserJourneyDto
     {
-        [Required]
-        public string Id { get; set; } = string.Empty;
+        public int Id { get; }
         [Required]
         public int ProjectId { get; set; } = 0;
         [Required]

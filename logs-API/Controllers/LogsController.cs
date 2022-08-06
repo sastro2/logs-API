@@ -6,6 +6,7 @@ using logs_API.Repo.LogsControllerRepo;
 using logs_API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cors;
+using logs_API.Models.LogModels.Database;
 
 namespace logs_API.Controllers
 {
@@ -37,7 +38,7 @@ namespace logs_API.Controllers
             IEnumerable<DbLog> logs = await _LogsInterface.GetLogs(_context);
 
             List<ResLogDto> logsDto = logs
-                .Select(x => new ResLogDto { Id = x.Id, Message = x.Message, ProjectId = x.ProjectId, Type = x.Type }).ToList();
+                .Select(x => new ResLogDto { Id = x.Id, Message = x.Message, ProjectId = x.UserJourney.ProjectId, Type = x.LogType.Name }).ToList();
 
             return logsDto;
         }
@@ -60,11 +61,11 @@ namespace logs_API.Controllers
             if(log == null) 
                 return NotFound();
 
-            ResLogDto logDto = new() { Id = log.Id, Message = log.Message, ProjectId = log.ProjectId, Type = log.Type };
+            ResLogDto logDto = new() { Id = log.Id, Message = log.Message, ProjectId = log.UserJourney.ProjectId, Type = log.LogType.Name };
             return logDto;
         }
 
-        [HttpPost("{userJourney}")]
+        [HttpPost]
         public async Task<ActionResult> CreateLogs([FromBody] UserJourneyDto userJourneyDto)
         {
             // TODOS
@@ -75,23 +76,9 @@ namespace logs_API.Controllers
 
             // Check if user has access to project if not return
 
-            Console.WriteLine("I AM HERE 111111111111111111111111111");
+            await _LogsInterface.CreateLogs(_context, userJourneyDto);
 
-            ReqLog[] reqLogs = Array.ConvertAll(userJourneyDto.Logs, log
-                => new ReqLog() { Message = log.Message, Timestamp = log.Timestamp, Type = log.Type });
-
-            Console.WriteLine("I AM HERE 2222222222222222222222222");
-
-            UserJourney userJourney = new() { Id = userJourneyDto.Id, 
-                                              Logs = reqLogs, 
-                                              ProjectId = userJourneyDto.ProjectId, 
-                                              Timestamp = userJourneyDto.Timestamp };
-
-            Console.WriteLine("I AM HERE 33333333333333333333333333");
-
-            await _LogsInterface.CreateLogs(_context, userJourney);
-
-            return Ok();
+            return CreatedAtAction(nameof(_LogsInterface.GetLogs), userJourneyDto);
         }
 
         [HttpDelete("{id}")]
