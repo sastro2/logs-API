@@ -3,7 +3,7 @@ using logs_API.Data;
 using logs_API.Models.LogModels.Database;
 using logs_API.Dtos;
 
-namespace logs_API.Interfaces.LogsInterface
+namespace logs_API.Interfaces
 {
     public interface ILogs
     {

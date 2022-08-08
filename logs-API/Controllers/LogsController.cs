@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using logs_API.Interfaces.LogsInterface;
-using logs_API.Models.LogModels;
 using logs_API.Dtos;
-using logs_API.Repo.LogsControllerRepo;
 using logs_API.Data;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cors;
 using logs_API.Models.LogModels.Database;
+using logs_API.Interfaces;
+using logs_API.Repo;
 
 namespace logs_API.Controllers
 {

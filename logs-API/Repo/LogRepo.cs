@@ -1,13 +1,13 @@
-﻿using logs_API.Interfaces.LogsInterface;
-using logs_API.Models.LogModels;
+﻿using logs_API.Models.LogModels;
 using logs_API.Data;
 using Microsoft.EntityFrameworkCore;
 using logs_API.Models.LogModels.Database;
 using logs_API.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using logs_API.Interfaces;
 
-namespace logs_API.Repo.LogsControllerRepo
+namespace logs_API.Repo
 {
     public class LogRepo : ILogs
     {
@@ -16,9 +16,12 @@ namespace logs_API.Repo.LogsControllerRepo
             var project = context.Projects.FirstOrDefault(p => p.Id == userJourney.ProjectId);
             if (project == null) { return; }
 
-            var journey = new DbUserJourney { ProjectId = userJourney.ProjectId, Timestamp = userJourney.Timestamp };
-
-            journey.DbLogs = new List<DbLog>();
+            var journey = new DbUserJourney
+            {
+                ProjectId = userJourney.ProjectId,
+                Timestamp = userJourney.Timestamp,
+                DbLogs = new List<DbLog>()
+            };
             foreach (ReqLogDto log in userJourney.Logs)
             {
                 DbLogType? type = context.Types.FirstOrDefault(t => t.ProjectId == userJourney.ProjectId && t.Name == log.Type);
@@ -31,7 +34,7 @@ namespace logs_API.Repo.LogsControllerRepo
             }
 
             context.UserJourneys.Add(journey);
-            await context.SaveChangesAsync();           
+            await context.SaveChangesAsync();
         }
 
         public async Task DeleteLog(DataContext context, DbLog log)

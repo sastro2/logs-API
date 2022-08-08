@@ -20,6 +20,6 @@ namespace logs_API.Models.LogModels.Database
         public string UserName { get; set; } = string.Empty;
         [Required]
         public string Password { get; set; } = string.Empty;
-        public virtual ICollection<DbProject>? Projects { get; set; }
+        public virtual ICollection<DbProject> Projects { get; set; }
     }
 }
