@@ -1,6 +1,6 @@
 using logs_API.Data;
-using logs_API.Interfaces.LogsInterface;
-using logs_API.Repo.LogsControllerRepo;
+using logs_API.Interfaces;
+using logs_API.Repo;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

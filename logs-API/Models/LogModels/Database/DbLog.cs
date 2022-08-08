@@ -10,14 +10,14 @@ namespace logs_API.Models.LogModels.Database
         [Required]
         public int Id { get; set; }
         [Required]
-        [ForeignKey("UserJourneys")]
+        [ForeignKey("DbUserJourney")]
         public int UserJourneyId { get; set; }
 
-        public virtual DbUserJourney? UserJourney { get; set; }
+        public virtual DbUserJourney UserJourney { get; set; }
         [Required]
         [ForeignKey("DbLogType")]
         public int LogTypeId { get; set; }
-        public virtual DbLogType? LogType { get; set; }
+        public virtual DbLogType LogType { get; set; }
 
         [Required]
         public string Message { get; set; } = string.Empty;

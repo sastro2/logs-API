@@ -28,7 +28,7 @@ namespace logs_API.Repo
 
                 if (type != null)
                 {
-                    DbLog dbLog = new() { Message = log.Message, LogTypeId = type.Id };
+                    DbLog dbLog = new() { UserJourneyId = userJourney.Id, Message = log.Message, LogTypeId = type.Id };
                     journey.DbLogs.Add(dbLog);
                 }
             }

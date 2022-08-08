@@ -1,5 +1,6 @@
 ﻿using logs_API.Data;
 using logs_API.Interfaces;
+using logs_API.Models.LogModels.Database;
 
 namespace logs_API.Repo
 {
@@ -7,7 +8,15 @@ namespace logs_API.Repo
     {
         public async Task CreateUser(DataContext context, string username, string password)
         {
-            throw new NotImplementedException();
+            DbUser? user = context.Users.FirstOrDefault(u => u.UserName == username);
+
+            if (user != null)
+                return;
+
+            DbUser newUser = new() { UserName = username, Password = password };
+            context.Users.Add(newUser);
+
+            await context.SaveChangesAsync();
         }
 
         public async Task DeleteUser(DataContext context, int id)

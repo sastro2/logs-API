@@ -1,6 +1,6 @@
 ﻿using logs_API.Data;
 using logs_API.Interfaces;
-using logs_API.Repo.ProjectControllerRepo;
+using logs_API.Repo;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 

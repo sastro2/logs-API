@@ -12,7 +12,7 @@ using logs_API.Data;
 namespace logs_API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220808131729_CreateInitial")]
+    [Migration("20220808220100_CreateInitial")]
     partial class CreateInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
