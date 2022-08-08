@@ -9,9 +9,11 @@ namespace logs_API.Models.LogModels.Database
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
         public int Id { get; set; }
-        public List<DbUser>? DbUsers { get; set; }
-        public virtual ICollection<DbUser>? Users { get; set; } 
-        public List<DbLogType>? DbTypes { get; set; }
-        public virtual ICollection<DbLogType>? Types { get; set; }
+        public DbProject()
+        {
+            this.Users = new HashSet<DbUser>();
+        }
+        public virtual ICollection<DbUser> Users { get; set; }
+        public virtual List<DbLogType>? LogTypes { get; set; }
     }
 }

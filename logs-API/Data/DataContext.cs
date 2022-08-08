@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using logs_API.Models.LogModels;
-using logs_API.Models.LogModels.Database;
+﻿using logs_API.Models.LogModels.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace logs_API.Data
 {
@@ -13,5 +12,10 @@ namespace logs_API.Data
         public DbSet<DbUserJourney> UserJourneys { get; set; }
         public DbSet<DbUser> Users { get; set; }
         public DbSet<DbProject> Projects { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

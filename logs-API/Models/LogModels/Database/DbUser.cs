@@ -5,6 +5,11 @@ namespace logs_API.Models.LogModels.Database
 {
     public class DbUser
     {
+        public DbUser()
+        {
+            this.Projects = new HashSet<DbProject>();
+        }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
