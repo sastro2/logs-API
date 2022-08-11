@@ -6,15 +6,19 @@ using logs_API.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using logs_API.Interfaces;
+using logs_API.Models.Response;
 
 namespace logs_API.Repo
 {
     public class LogRepo : ILogs
     {
-        public async Task CreateLogs(DataContext context, UserJourneyDto userJourney)
+        public async Task<Error?> CreateLogs(DataContext context, UserJourneyDto userJourney)
         {
             var project = context.Projects.FirstOrDefault(p => p.Id == userJourney.ProjectId);
-            if (project == null) { return; }
+            if (project == null) 
+            {
+                return new Error { Message = "Could not find project please make sure to pass an existing projectId with your User Journey", ErrorCode = 0004 }; 
+            }
 
             var journey = new DbUserJourney
             {
@@ -35,6 +39,8 @@ namespace logs_API.Repo
 
             context.UserJourneys.Add(journey);
             await context.SaveChangesAsync();
+
+            return null;
         }
 
         public async Task DeleteLog(DataContext context, DbLog log)
@@ -43,9 +49,11 @@ namespace logs_API.Repo
             await context.SaveChangesAsync();
         }
 
-        public async Task<DbLog?> GetLog(DataContext context, string id)
+        public async Task<DbLog?> GetLog(DataContext context, int id)
         {
             DbLog? log = await context.Logs.FindAsync(id);
+
+            if (log == null) return null;
 
             return log;
         }

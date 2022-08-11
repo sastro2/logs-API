@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Cors;
 using logs_API.Models.LogModels.Database;
 using logs_API.Interfaces;
 using logs_API.Repo;
+using logs_API.Models.Response;
 
 namespace logs_API.Controllers
 {
@@ -42,7 +43,7 @@ namespace logs_API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ResLogDto>> GetLog(string id)
+        public async Task<ActionResult<ResLogDto>> GetLog(int id)
         {
             // TODOS
 
@@ -54,10 +55,14 @@ namespace logs_API.Controllers
 
             // Check if specified log is part of that project if not return
 
+            if (typeof(int) != id.GetType())
+                return BadRequest(new Error { Message = "Must specify an Id of type integer", ErrorCode = 0002 });
+
+
             DbLog? log = await _LogsInterface.GetLog(_context, id);
-            
-            if(log == null) 
-                return NotFound();
+
+            if (log == null)
+                return NotFound(new Error { Message = "Did not find Log with id" + " " + id.ToString(), ErrorCode = 0001 });
 
             ResLogDto logDto = new() { Id = log.Id, Message = log.Message, ProjectId = log.UserJourney.ProjectId, Type = log.LogType.Name };
             return logDto;
@@ -74,13 +79,26 @@ namespace logs_API.Controllers
 
             // Check if user has access to project if not return
 
-            await _LogsInterface.CreateLogs(_context, userJourneyDto);
+            if(userJourneyDto.Id.GetType() != typeof(int) || 
+                userJourneyDto.Timestamp.GetType() != typeof(int) || 
+                userJourneyDto.ProjectId.GetType() != typeof(int) ||
+                userJourneyDto.Logs.GetType() != typeof(ReqLogDto[]))
+            {
+                return BadRequest(new Error { Message = "Invalid type please make sure type matches userJourney", ErrorCode = 0003 });
+            }
+
+            Error? error = await _LogsInterface.CreateLogs(_context, userJourneyDto);
+
+            if(error != null)
+            {
+                return BadRequest(error);
+            }
 
             return CreatedAtAction(nameof(_LogsInterface.GetLogs), userJourneyDto);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteLog(string id)
+        public async Task<ActionResult> DeleteLog(int id)
         {
             // TODOS
 
@@ -92,9 +110,14 @@ namespace logs_API.Controllers
 
             // Check if specified log is part of that project if not return
 
+            if(typeof(int) != id.GetType())
+                return BadRequest(new Error { Message = "Must specify an Id of type integer", ErrorCode = 0002 });
+            
+
             DbLog? log = await _LogsInterface.GetLog(_context, id);
+
             if (log == null)
-                return NotFound();
+                return NotFound(new Error { Message = "Did not find Log with id" + " " + id.ToString(), ErrorCode = 0001 });
 
             await _LogsInterface.DeleteLog(_context, log);
             return Ok();
