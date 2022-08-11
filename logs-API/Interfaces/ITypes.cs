@@ -1,0 +1,11 @@
+﻿using logs_API.Data;
+using logs_API.Models.Response;
+
+namespace logs_API.Interfaces
+{
+    public interface ITypes
+    {
+        public Task<Error> CreateType(DataContext context, string name, int projectId, bool sendImmediately);
+        public Task<Error> DeleteType(DataContext context, int id, int projectId);
+    }
+}
