@@ -1,4 +1,5 @@
 ﻿using logs_API.Data;
+using logs_API.Dtos;
 using logs_API.Interfaces;
 using logs_API.Models.Response;
 using logs_API.Repo;
@@ -20,17 +21,25 @@ namespace logs_API.Controllers
             _TypesInterface = new TypeRepo();
         }
 
-        [HttpPost]
-        public async Task<ActionResult> CreateType(string name, int projectId, bool sendImmediately)
+        [HttpGet("{projectId}")]
+        public ActionResult<List<TypeDto>> GetTypes(int projectId)
         {
-            if(typeof(string) != name.GetType() ||
-                typeof(int) != projectId.GetType() ||
-                typeof(bool) != sendImmediately.GetType())
+            List<TypeDto> types = _TypesInterface.GetTypes(_context, projectId);
+
+            return types;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateType([FromBody] TypeDto type)
+        {
+            if(typeof(string) != type.Name.GetType() ||
+                typeof(int) != type.ProjectId.GetType() ||
+                typeof(bool) != type.SendImmediately.GetType())
             {
                 return BadRequest(new Error { Message = "Invalid type please make sure type matches logType", ErrorCode = 0005 });
             }
 
-            Error? error = await _TypesInterface.CreateType(_context, name, projectId, sendImmediately);
+            Error? error = await _TypesInterface.CreateType(_context, type.Name, type.ProjectId, type.SendImmediately);
 
             if (error != null)
                 return NotFound(error);

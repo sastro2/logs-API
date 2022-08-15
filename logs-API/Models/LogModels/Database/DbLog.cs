@@ -10,6 +10,8 @@ namespace logs_API.Models.LogModels.Database
         [Required]
         public int Id { get; set; }
         [Required]
+        public int Timestamp { get; set; }
+        [Required]
         [ForeignKey("DbUserJourney")]
         public int UserJourneyId { get; set; }
 

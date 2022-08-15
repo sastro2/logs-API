@@ -23,7 +23,7 @@ namespace logs_API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<ProjectDto>> GetAllProjectsForUser(int userId)
+        public ActionResult<List<ProjectDto>> GetAllProjectsForUser(int userId)
         {
             IEnumerable<DbProject> projects = _ProjectsInterface.GetAllProjectsForUserById(_context, userId);
 

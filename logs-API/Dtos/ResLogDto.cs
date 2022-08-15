@@ -7,7 +7,9 @@ namespace logs_API.Dtos
         [Required]
         public int Id { get; set; }
         [Required]
-        public int ProjectId { get; set; } = 0;
+        public int ProjectId { get; set; }
+        [Required]
+        public int Timestamp { get; set; } = 0;
         [Required]
         public string Type { get; set; } = string.Empty;
         [Required]

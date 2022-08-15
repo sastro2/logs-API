@@ -25,7 +25,7 @@ namespace logs_API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ResLogDto>>> GetLogs()
+        public async Task<ActionResult<List<ResLogDto>>> GetLogs()
         {
             // TODOS
 
@@ -38,7 +38,7 @@ namespace logs_API.Controllers
             IEnumerable<DbLog> logs = await _LogsInterface.GetLogs(_context);
 
             List<ResLogDto> logsDto = logs
-                .Select(x => new ResLogDto { Id = x.Id, Message = x.Message, ProjectId = x.UserJourney.ProjectId, Type = x.LogType.Name }).ToList();
+                .Select(x => new ResLogDto { Id = x.Id, Message = x.Message, ProjectId = x.UserJourney.ProjectId, Timestamp = x.Timestamp, Type = x.LogType.Name }).ToList();
 
             return logsDto;
         }
@@ -65,7 +65,7 @@ namespace logs_API.Controllers
             if (log == null)
                 return NotFound(new Error { Message = "Did not find Log with id" + " " + id.ToString(), ErrorCode = 0001 });
 
-            ResLogDto logDto = new() { Id = log.Id, Message = log.Message, ProjectId = log.UserJourney.ProjectId, Type = log.LogType.Name };
+            ResLogDto logDto = new() { Id = log.Id, ProjectId = log.UserJourney.ProjectId, Message = log.Message, Timestamp = log.Timestamp, Type = log.LogType.Name };
             return logDto;
         }
 

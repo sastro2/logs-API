@@ -14,6 +14,6 @@ namespace logs_API.Models.LogModels.Database
             this.Users = new HashSet<DbUser>();
         }
         public virtual ICollection<DbUser> Users { get; set; }
-        public virtual List<DbLogType>? LogTypes { get; set; }
+        public virtual ICollection<DbLogType> LogTypes { get; set; }
     }
 }
