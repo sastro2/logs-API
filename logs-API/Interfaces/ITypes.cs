@@ -1,6 +1,6 @@
 ﻿using logs_API.Data;
 using logs_API.Dtos;
-using logs_API.Models.Response;
+using logs_API.Models.ResponseModels;
 
 namespace logs_API.Interfaces
 {

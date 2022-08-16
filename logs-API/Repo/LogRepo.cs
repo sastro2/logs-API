@@ -6,7 +6,7 @@ using logs_API.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using logs_API.Interfaces;
-using logs_API.Models.Response;
+using logs_API.Models.ResponseModels;
 
 namespace logs_API.Repo
 {

@@ -1,4 +1,4 @@
-﻿namespace logs_API.Models.Response
+﻿namespace logs_API.Models.ResponseModels
 {
     public class Error
     {

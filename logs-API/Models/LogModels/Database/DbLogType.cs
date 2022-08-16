@@ -16,5 +16,7 @@ namespace logs_API.Models.LogModels.Database
         [Required]
         [ForeignKey("DbProject")]
         public int ProjectId { get; set; }
+        public DbProject Project { get; set; }
+        public virtual ICollection<DbLog> Logs { get; set; }
     }
 }

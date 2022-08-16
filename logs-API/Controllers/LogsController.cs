@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Cors;
 using logs_API.Models.LogModels.Database;
 using logs_API.Interfaces;
 using logs_API.Repo;
-using logs_API.Models.Response;
+using logs_API.Models.ResponseModels;
 using System.Diagnostics;
 
 namespace logs_API.Controllers

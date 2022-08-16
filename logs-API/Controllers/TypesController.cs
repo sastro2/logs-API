@@ -1,7 +1,7 @@
 ﻿using logs_API.Data;
 using logs_API.Dtos;
 using logs_API.Interfaces;
-using logs_API.Models.Response;
+using logs_API.Models.ResponseModels;
 using logs_API.Repo;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;

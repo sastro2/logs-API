@@ -57,17 +57,17 @@ namespace logs_API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SendImmediately = table.Column<bool>(type: "bit", nullable: false),
-                    ProjectId = table.Column<int>(type: "int", nullable: false),
-                    DbProjectId = table.Column<int>(type: "int", nullable: true)
+                    ProjectId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Types", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Types_Projects_DbProjectId",
-                        column: x => x.DbProjectId,
+                        name: "FK_Types_Projects_ProjectId",
+                        column: x => x.ProjectId,
                         principalTable: "Projects",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -100,6 +100,7 @@ namespace logs_API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Timestamp = table.Column<int>(type: "int", nullable: false),
                     UserJourneyId = table.Column<int>(type: "int", nullable: false),
                     LogTypeId = table.Column<int>(type: "int", nullable: false),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -137,9 +138,9 @@ namespace logs_API.Migrations
                 column: "UserJourneyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Types_DbProjectId",
+                name: "IX_Types_ProjectId",
                 table: "Types",
-                column: "DbProjectId");
+                column: "ProjectId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

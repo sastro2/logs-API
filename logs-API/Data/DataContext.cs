@@ -16,6 +16,10 @@ namespace logs_API.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<DbUserJourney>().HasMany(u => u.DbLogs).WithOne(l => l.UserJourney);
+            modelBuilder.Entity<DbLogType>().HasMany(t => t.Logs).WithOne(l => l.LogType);
+            modelBuilder.Entity<DbUser>().HasMany(u => u.Projects).WithMany(p => p.Users);
+            modelBuilder.Entity<DbProject>().HasMany(p => p.LogTypes).WithOne(t => t.Project);
         }
     }
 }
