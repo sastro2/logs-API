@@ -34,7 +34,7 @@ namespace logs_API.Repo
         {
             List<DbLogType> types = context.Types.Where(t => t.ProjectId == projectId).ToList();
 
-            List<TypeDto> resTypes = types.Select(t => new TypeDto { Name = t.Name, ProjectId = t.ProjectId, SendImmediately = t.SendImmediately }).ToList();
+            List<TypeDto> resTypes = types.Select(t => new TypeDto { Id = t.Id, Name = t.Name, ProjectId = t.ProjectId, SendImmediately = t.SendImmediately }).ToList();
 
             return resTypes;
         }

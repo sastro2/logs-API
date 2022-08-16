@@ -84,6 +84,10 @@ namespace logs_API.Migrations
                     b.Property<bool>("SendImmediately")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Styles")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProjectId");

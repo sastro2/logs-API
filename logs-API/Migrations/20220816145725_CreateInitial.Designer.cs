@@ -11,7 +11,7 @@ using logs_API.Data;
 namespace logs_API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220816091946_CreateInitial")]
+    [Migration("20220816145725_CreateInitial")]
     partial class CreateInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,6 +85,10 @@ namespace logs_API.Migrations
 
                     b.Property<bool>("SendImmediately")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Styles")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
