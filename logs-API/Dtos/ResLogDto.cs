@@ -7,7 +7,7 @@ namespace logs_API.Dtos
         [Required]
         public int Id { get; set; }
         [Required]
-        public int ProjectId { get; set; }
+        public int UserJourneyId { get; set; }
         [Required]
         public int Timestamp { get; set; } = 0;
         [Required]
